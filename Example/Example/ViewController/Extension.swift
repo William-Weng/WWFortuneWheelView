@@ -47,18 +47,6 @@ extension NSNumber {
     }
 }
 
-// MARK: - CGFloat (class function)
-extension CGFloat {
-    
-    /// 轉換小數點有效位數 (四捨五入)
-    /// - 123.456789._decimalPoint(2) => 123.46
-    /// - Parameter decimal: 要轉換的小數位數
-    /// - Returns: NSString
-    func _decimalPoint(_ decimal: UInt) -> CGFloat {
-        return CGFloat(Double(self)._decimalPoint(decimal))
-    }
-}
-
 // MARK: - Double (class function)
 extension Double {
     
@@ -68,5 +56,17 @@ extension Double {
     /// - Returns: NSString
     func _decimalPoint(_ decimal: UInt) -> Double {
         return NSNumber._decimalPoint(number: NSNumber(value: self), decimal: decimal).doubleValue
+    }
+}
+
+// MARK: - CGFloat (class function)
+extension CGFloat {
+    
+    /// 轉換小數點有效位數 (四捨五入)
+    /// - 123.456789._decimalPoint(2) => 123.46
+    /// - Parameter decimal: 要轉換的小數位數
+    /// - Returns: NSString
+    func _decimalPoint(_ decimal: UInt) -> CGFloat {
+        return CGFloat(Double(self)._decimalPoint(decimal))
     }
 }

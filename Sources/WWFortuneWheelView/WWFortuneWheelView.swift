@@ -26,6 +26,7 @@ open class WWFortuneWheelView: UIView {
     
     public weak var myDelegate: WWFortuneWheelViewDelegate?
     public var bullseyeButtons: [UIButton] = []
+    public var rotateRange: ClosedRange<UInt> = UInt.min...UInt.max
     
     private let animationDuration: TimeInterval = 0.5
     
@@ -74,13 +75,16 @@ private extension WWFortuneWheelView {
     ///   - event: [UIEvent?](https://www.jianshu.com/p/dbb05bdccf18)
     func recordInitialRotationParameter(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        guard let touche = touches.first else { return }
-        
-        initialRotationParameter = rotationParameterMaker(with: touche, rotationView: wheelView)
+        guard let touch = touches.first,
+              canRotateRadius(touchRadius(touch), range: self.rotateRange)
+        else {
+            return
+        }
+
+        initialRotationParameter = rotationParameterMaker(with: touch, rotationView: wheelView)
         bullseyeButtonTransforms = wheelButtonsStartTransformsMaker(bullseyeButtons)
         
         let rotatingAngle = convertRotatingAngle(with: initialRotationParameter)
-        
         myDelegate?.willRotate(self, unitAngle: unitAngleMaker(with: count), startAngle: rotatingAngle)
     }
     
@@ -90,15 +94,19 @@ private extension WWFortuneWheelView {
     ///   - event: UIEvent?
     func rotateWheel(_ touches: Set<UITouch>, with event: UIEvent?, isVerticalDisplay: Bool) {
         
-        guard let touche = touches.first else { return }
-        
-        let parameter = rotationParameterMaker(with: touche, rotationView: wheelView)
-        let nextIndex = indexMaker(with: count, radian: parameter.radian)
+        guard let touch = touches.first,
+              canRotateRadius(touchRadius(touch), range: self.rotateRange)
+        else {
+            return
+        }
+                
+        let parameter = rotationParameterMaker(with: touch, rotationView: wheelView)
+        let index = indexMaker(with: count, radian: parameter.radian)
         let deltaRadian = parameter.deltaRadian - initialRotationParameter.deltaRadian
         let rotatingAngle = convertRotatingAngle(with: parameter)
         
         rotateWheelView(with: deltaRadian, isVerticalDisplay: isVerticalDisplay)
-        myDelegate?.rotating(self, from: currentIndex, to: nextIndex, angle: rotatingAngle)
+        myDelegate?.rotating(self, from: currentIndex, to: index, angle: rotatingAngle)
     }
     
     /// [Touch完成後，修正輪子的角度 => 記錄Index](https://www.appcoda.com.tw/view-animation-in-swift/)
@@ -107,9 +115,13 @@ private extension WWFortuneWheelView {
     ///   - event: UIEvent?
     func fixRotationWheel(_ touches: Set<UITouch>, with event: UIEvent?, isVerticalDisplay: Bool) {
         
-        guard let touche = touches.first else { return }
-        
-        let parameter = rotationParameterMaker(with: touche, rotationView: wheelView)
+        guard let touch = touches.first,
+              canRotateRadius(touchRadius(touch), range: self.rotateRange)
+        else {
+            return
+        }
+
+        let parameter = rotationParameterMaker(with: touch, rotationView: wheelView)
         let nextIndex = indexMaker(with: count, radian: parameter.radian)
         let nextAngle = Double(currentIndex - nextIndex) * unitAngleMaker(with: count)
                 
@@ -321,8 +333,25 @@ private extension WWFortuneWheelView {
     /// 旋轉角度轉換 => ∵ 實際上是反轉 ∴ 要變換成肉眼看到的角度
     /// - Parameter parameter: RotationParameter
     /// - Returns: CGFloat
-    private func convertRotatingAngle(with parameter: RotationParameter) -> CGFloat {
+    func convertRotatingAngle(with parameter: RotationParameter) -> CGFloat {
         let rotatingAngle = (parameter.radian < 0) ? -parameter.radian._angle() : -parameter.radian._angle() + 360.0
         return rotatingAngle
+    }
+    
+    /// 計算與中心點的半徑
+    /// - Parameter touch: UITouch
+    /// - Returns: CGFloat
+    func touchRadius(_ touch: UITouch) -> CGFloat {
+        let coordinate = touch.location(in: self) - wheelView.center
+        return coordinate._radius()
+    }
+    
+    /// 設定可以滾動的範圍 => 可以設定中空的範圍
+    /// - Parameters:
+    ///   - radius: 圓半徑 => (0, 0)
+    ///   - range: [100...200]
+    /// - Returns: Bool
+    func canRotateRadius(_ radius: CGFloat, range: ClosedRange<UInt>) -> Bool {
+        return range.contains(UInt(radius))
     }
 }

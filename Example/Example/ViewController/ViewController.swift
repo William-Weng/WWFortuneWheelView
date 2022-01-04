@@ -68,6 +68,7 @@ private extension ViewController {
     func initSetting() {
         
         myFortuneWheelView.myDelegate = self
+        myFortuneWheelView.rotateRange = 120...180
         myFortuneWheelView.bullseyeButtons.forEach { button in
             
             let stateImages: [(image: UIImage, state: UIControl.State)] = [
