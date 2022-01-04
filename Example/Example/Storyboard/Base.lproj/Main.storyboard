@@ -31,10 +31,13 @@
                                         <real key="value" value="36"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="size" keyPath="buttonSize">
-                                        <size key="value" width="105" height="105"/>
+                                        <size key="value" width="36" height="36"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isVerticalDisplay" value="YES"/>
                                     <userDefinedRuntimeAttribute type="image" keyPath="wheelImage" value="Wheel"/>
+                                    <userDefinedRuntimeAttribute type="point" keyPath="buttonPoint">
+                                        <point key="value" x="0.0" y="35"/>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XX5-rn-rvp">
