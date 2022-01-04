@@ -16,17 +16,8 @@ dependencies: [
 
 ### Example
 ```swift
-//
-//  ViewController.swift
-//  Example
-//
-//  Created by William.Weng on 2022/01/01.
-//  ~/Library/Caches/org.swift.swiftpm/
-//  file:///Users/william/Desktop/WWFortuneWheelView
-
 import UIKit
 import WWFortuneWheelView
-import WWPrint
 
 final class ViewController: UIViewController {
     
@@ -86,6 +77,7 @@ private extension ViewController {
     func initSetting() {
         
         myFortuneWheelView.myDelegate = self
+        myFortuneWheelView.rotateRange = 120...180
         myFortuneWheelView.bullseyeButtons.forEach { button in
             
             let stateImages: [(image: UIImage, state: UIControl.State)] = [
