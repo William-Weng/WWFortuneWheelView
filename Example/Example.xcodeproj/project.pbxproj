@@ -13,8 +13,8 @@
 		3DBCD87B26F198EF00522E3B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DBCD87926F198EF00522E3B /* Main.storyboard */; };
 		3DBCD87D26F198F300522E3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DBCD87C26F198F300522E3B /* Assets.xcassets */; };
 		3DBCD88026F198F300522E3B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DBCD87E26F198F300522E3B /* LaunchScreen.storyboard */; };
+		3DEDC4672783FB4500228B61 /* WWFortuneWheelView in Frameworks */ = {isa = PBXBuildFile; productRef = 3DEDC4662783FB4500228B61 /* WWFortuneWheelView */; };
 		3DF0C4F32783DA9B00D8245A /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF0C4F22783DA9B00D8245A /* Extension.swift */; };
-		3DF0C4F62783E16300D8245A /* WWFortuneWheelView in Frameworks */ = {isa = PBXBuildFile; productRef = 3DF0C4F52783E16300D8245A /* WWFortuneWheelView */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,7 +34,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DAC9C1927016E78006663C2 /* WWPrint in Frameworks */,
-				3DF0C4F62783E16300D8245A /* WWFortuneWheelView in Frameworks */,
+				3DEDC4672783FB4500228B61 /* WWFortuneWheelView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,7 +129,7 @@
 			name = Example;
 			packageProductDependencies = (
 				3DAC9C1827016E78006663C2 /* WWPrint */,
-				3DF0C4F52783E16300D8245A /* WWFortuneWheelView */,
+				3DEDC4662783FB4500228B61 /* WWFortuneWheelView */,
 			);
 			productName = Example;
 			productReference = 3DBCD87026F198EF00522E3B /* Example.app */;
@@ -160,7 +160,7 @@
 			mainGroup = 3DBCD86726F198EF00522E3B;
 			packageReferences = (
 				3DAC9C1727016E78006663C2 /* XCRemoteSwiftPackageReference "WWPrint" */,
-				3D6C8EAA2782FAD7004E1C13 /* XCRemoteSwiftPackageReference "WWFortuneWheelView" */,
+				3DEDC4652783FB4500228B61 /* XCRemoteSwiftPackageReference "WWFortuneWheelView" */,
 			);
 			productRefGroup = 3DBCD87126F198EF00522E3B /* Products */;
 			projectDirPath = "";
@@ -397,20 +397,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		3D6C8EAA2782FAD7004E1C13 /* XCRemoteSwiftPackageReference "WWFortuneWheelView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "file:///Users/william/Desktop/WWFortuneWheelView";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		3DAC9C1727016E78006663C2 /* XCRemoteSwiftPackageReference "WWPrint" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/William-Weng/WWPrint";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
+			};
+		};
+		3DEDC4652783FB4500228B61 /* XCRemoteSwiftPackageReference "WWFortuneWheelView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/William-Weng/WWFortuneWheelView.git";
+			requirement = {
+				branch = main;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -421,9 +421,9 @@
 			package = 3DAC9C1727016E78006663C2 /* XCRemoteSwiftPackageReference "WWPrint" */;
 			productName = WWPrint;
 		};
-		3DF0C4F52783E16300D8245A /* WWFortuneWheelView */ = {
+		3DEDC4662783FB4500228B61 /* WWFortuneWheelView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3D6C8EAA2782FAD7004E1C13 /* XCRemoteSwiftPackageReference "WWFortuneWheelView" */;
+			package = 3DEDC4652783FB4500228B61 /* XCRemoteSwiftPackageReference "WWFortuneWheelView" */;
 			productName = WWFortuneWheelView;
 		};
 /* End XCSwiftPackageProductDependency section */

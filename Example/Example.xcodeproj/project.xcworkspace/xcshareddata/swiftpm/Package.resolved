@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "WWFortuneWheelView",
-        "repositoryURL": "/Users/william/Desktop/WWFortuneWheelView",
+        "repositoryURL": "https://github.com/William-Weng/WWFortuneWheelView.git",
         "state": {
           "branch": "main",
-          "revision": "049442fc0ca1979b0a5502197cd33ab3c05db50b",
+          "revision": "0f7655732598871eb08c7ab84cc90b7537937988",
           "version": null
         }
       },
