@@ -14,10 +14,11 @@ open class WWFortuneWheelView: UIView {
     typealias RotationParameter = (radian: CGFloat, deltaRadian: CGFloat, transform: CGAffineTransform)
     
     @IBInspectable public var count: Int = 4
-    @IBInspectable public var fontSize: CGFloat = 12.0
     @IBInspectable public var buttonSize: CGSize = CGSize(width: 36, height: 36)
-    @IBInspectable public var isVerticalDisplay: Bool = false
+    @IBInspectable public var buttonPoint: CGPoint = CGPoint(x: 0, y: 0)
+    @IBInspectable public var fontSize: CGFloat = 12.0
     @IBInspectable public var wheelImage: UIImage = UIImage()
+    @IBInspectable public var isVerticalDisplay: Bool = false
 
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var wheelView: UIView!
@@ -43,7 +44,7 @@ open class WWFortuneWheelView: UIView {
     }
     
     override public func draw(_ rect: CGRect) {
-        bullseyeButtonsCountSetting(with: count, buttonSize: buttonSize, fontSize: fontSize, isVerticalDisplay: isVerticalDisplay, wheelImage: wheelImage)
+        bullseyeButtonsCountSetting(with: count, buttonSize: buttonSize, buttonPoint: buttonPoint, fontSize: fontSize, wheelImage: wheelImage, isVerticalDisplay: isVerticalDisplay)
         #if TARGET_INTERFACE_BUILDER
         #endif
     }
@@ -144,10 +145,13 @@ private extension WWFortuneWheelView {
     ///   - buttonSize: 按鍵大小
     ///   - fontSize: 文字大小
     ///   - isVerticalDisplay: 滾輪按鍵是否要跟著轉？
-    func bullseyeButtonsCountSetting(with count: Int, buttonSize: CGSize = CGSize(width: 36, height: 36), fontSize: CGFloat = 12.0, isVerticalDisplay: Bool = true, wheelImage: UIImage) {
+    ///   - buttonPoint: 按鍵的位置
+    ///   - wheelImage: 滾輪的底圖
+    func bullseyeButtonsCountSetting(with count: Int, buttonSize: CGSize = CGSize(width: 36, height: 36), buttonPoint: CGPoint = .zero, fontSize: CGFloat = 12.0, wheelImage: UIImage, isVerticalDisplay: Bool = true) {
         
         self.count = count
         self.buttonSize = buttonSize
+        self.buttonPoint = buttonPoint
         self.isVerticalDisplay = isVerticalDisplay
         self.wheelImage = wheelImage
         self.fontSize = fontSize
@@ -157,7 +161,7 @@ private extension WWFortuneWheelView {
             
             let angle = angleMaker(with: count, for: index)
             let label = wheelLabelMaker(with: buttonSize.width, tag: index, angle: angle)
-            let button = wheelButtonMaker(with: index, size: buttonSize, fontSize: fontSize, isVerticalDisplay: isVerticalDisplay, angle: angle)
+            let button = wheelButtonMaker(with: index, size: buttonSize, fontSize: fontSize, origin: buttonPoint, angle: angle, isVerticalDisplay: isVerticalDisplay)
             
             label.addSubview(button)
             wheelView.addSubview(label)
@@ -192,10 +196,11 @@ private extension WWFortuneWheelView {
     ///   - fontSize: CGFloat
     ///   - isVerticalDisplay: Bool
     ///   - angle: CGFloat
+    ///   - origin: CGPoint
     /// - Returns: UIButton
-    func wheelButtonMaker(with index: Int, size: CGSize, fontSize: CGFloat = 12.0, isVerticalDisplay: Bool, angle: CGFloat) -> UIButton {
+    func wheelButtonMaker(with index: Int, size: CGSize, fontSize: CGFloat = 12.0, origin: CGPoint, angle: CGFloat, isVerticalDisplay: Bool) -> UIButton {
         
-        let button = UIButton(frame: CGRect(origin: .zero, size: size))
+        let button = UIButton(frame: CGRect(origin: origin, size: size))
         
         button.tag = index
         button.setTitle("\(index)", for: .normal)
