@@ -8,7 +8,6 @@
 
 import UIKit
 import WWFortuneWheelView
-import WWPrint
 
 final class ViewController: UIViewController {
     
@@ -59,7 +58,7 @@ extension ViewController: WWFortuneWheelViewDelegate {
         angleLabel.text = "\(angle._decimalPoint(decimalCount))"
 
         self.angle.end = angle
-        wheelView.bullseyeButtons._isSelected(only: index)
+        wheelView.bullseyeButtons._isSelected(at: index)
     }
 }
 

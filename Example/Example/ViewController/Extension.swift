@@ -19,7 +19,7 @@ extension Collection where Self.Element: UIControl {
     
     /// 被選到的UIControl (單選)
     /// - Parameter index: Self.Index
-    func _isSelected(only index: Self.Index) {
+    func _isSelected(at index: Self.Index) {
         
         guard let selectedButton = self[safe: index] else { return }
         
