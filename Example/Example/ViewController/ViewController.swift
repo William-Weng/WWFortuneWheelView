@@ -59,7 +59,7 @@ extension ViewController: WWFortuneWheelViewDelegate {
         angleLabel.text = "\(angle._decimalPoint(decimalCount))"
 
         self.angle.end = angle
-        _ = wheelView.bullseyeButtons._isSelected(only: index)
+        wheelView.bullseyeButtons._isSelected(only: index)
     }
 }
 

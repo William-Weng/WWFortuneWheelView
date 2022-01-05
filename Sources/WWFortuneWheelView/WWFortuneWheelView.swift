@@ -79,8 +79,10 @@ public extension WWFortuneWheelView {
         
         guard canUsed.buttonTouch else { return }
         
-        let rotateAngle = angleMaker(with: count, for: currentIndex - index)
-        
+        let currentAngle = angleMaker(with: count, for: currentIndex)
+        let nextIndexAngle = angleMaker(with: count, for: index)
+        let rotateAngle = currentAngle - nextIndexAngle
+
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: animationDuration, delay: .zero, options: [.curveEaseIn]) {
             
             self.wheelView.transform = self.wheelView.transform.rotated(by: rotateAngle._radian())
@@ -91,7 +93,7 @@ public extension WWFortuneWheelView {
             
         } completion: { postion in
             self.currentIndex = index
-            self.myDelegate?.didRotated(self, at: index, angle: rotateAngle)
+            self.myDelegate?.didRotated(self, at: index, angle: nextIndexAngle)
         }
     }
 }
@@ -168,7 +170,7 @@ private extension WWFortuneWheelView {
 // MARK: - 小工具
 private extension WWFortuneWheelView {
     
-    /// 讀取Nib畫面 => 加到View上面
+    /// 讀取Nib畫面 => 加到View上面 => 只點單指點擊
     func initViewFromXib() {
         
         let bundle = Bundle.module
@@ -178,6 +180,7 @@ private extension WWFortuneWheelView {
         
         contentView.frame = bounds
         contentView.isMultipleTouchEnabled = false
+        
         addSubview(contentView)
     }
     

@@ -15,19 +15,16 @@ extension Collection {
 }
 
 // MARK: - Collection (class function)
-extension Collection where Self.Element: UIButton {
+extension Collection where Self.Element: UIControl {
     
-    /// 被選到的Button (單選)
+    /// 被選到的UIControl (單選)
     /// - Parameter index: Self.Index
-    /// - Returns: UIButton?
-    func _isSelected(only index: Self.Index) -> UIButton? {
+    func _isSelected(only index: Self.Index) {
         
-        guard let selectedButton = self[safe: index] else { return nil }
+        guard let selectedButton = self[safe: index] else { return }
         
         self.forEach { button in button.isSelected = false }
         selectedButton.isSelected = true
-        
-        return selectedButton
     }
 }
 
