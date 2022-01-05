@@ -31,7 +31,7 @@ open class WWFortuneWheelView: UIView {
     private let animationDuration: TimeInterval = 0.5
     
     private var currentIndex: Int = 0
-    private var canRotate: Bool = false
+    private var canUsed: (viewRotate: Bool, buttonTouch: Bool) = (false, false)
     private var initialRotationParameter: RotationParameter = (.zero, .zero, .identity)
     private var bullseyeButtonTransforms: [CGAffineTransform] = []
     
@@ -73,9 +73,11 @@ public extension WWFortuneWheelView {
 // MARK: 公開的Function
 public extension WWFortuneWheelView {
     
-    /// 轉動至特定的Index (直接轉角度) => Button的Tag (不要去改它)
+    /// 轉動至特定的Index (直接轉角度) / 旋轉的時候會沒反應 => Button的Tag (不要去改它)
     /// - Parameter index: Int
     func _rotate(toNextIndex index: Int) {
+        
+        guard canUsed.buttonTouch else { return }
         
         let rotateAngle = angleMaker(with: count, for: currentIndex - index)
         
@@ -106,15 +108,17 @@ private extension WWFortuneWheelView {
         guard let touch = touches.first,
               canRotateRadius(touchRadius(touch), range: self.rotateRange)
         else {
-            canRotate = false; return
+            canUsed.viewRotate = false; return
         }
-                
-        canRotate = true
-        bullseyeButtons._isUserInteractionEnabled(false)
+        
+        let rotatingAngle = convertRotatingAngle(with: initialRotationParameter)
+        
+        canUsed.viewRotate = true
+        canUsed.buttonTouch = false
+        
         initialRotationParameter = rotationParameterMaker(with: touch, rotationView: wheelView)
         bullseyeButtonTransforms = wheelButtonsStartTransformsMaker(bullseyeButtons)
         
-        let rotatingAngle = convertRotatingAngle(with: initialRotationParameter)
         myDelegate?.willRotate(self, unitAngle: unitAngleMaker(with: count), startAngle: rotatingAngle)
     }
     
@@ -124,7 +128,7 @@ private extension WWFortuneWheelView {
     ///   - event: UIEvent?
     func rotateWheel(_ touches: Set<UITouch>, with event: UIEvent?, isVerticalDisplay: Bool) {
         
-        guard let touch = touches.first, canRotate else { return }
+        guard let touch = touches.first, canUsed.viewRotate else { return }
         
         let parameter = rotationParameterMaker(with: touch, rotationView: wheelView)
         let index = indexMaker(with: count, radian: parameter.radian)
@@ -154,8 +158,8 @@ private extension WWFortuneWheelView {
             
             let angle = Double(nextIndex) * self.unitAngleMaker(with: self.count)
             
+            self.canUsed.buttonTouch = true
             self.currentIndex = nextIndex
-            self.bullseyeButtons._isUserInteractionEnabled(false)
             self.myDelegate?.didRotated(self, at: nextIndex, angle: angle)
         }
     }
@@ -313,7 +317,7 @@ private extension WWFortuneWheelView {
     ///   - radian: [CGFloat](https://medium.com/weeronline/swift-transforms-5981398b437d)
     ///   - isVerticalWord: Bool
     func rotateWheelView(with radian: CGFloat, isVerticalDisplay: Bool) {
-        canRotate = true
+        canUsed.viewRotate = true
         wheelView.transform = initialRotationParameter.transform.rotated(by: radian)
         if (isVerticalDisplay) { antiRotateButton(with: radian) }
     }
