@@ -30,7 +30,9 @@ final class ViewController: UIViewController {
         initSetting()
     }
     
-    @objc func didPressed(_ sender: UIButton) { indexLabel.text = "\(sender.tag)" }
+    @objc func didPressed(_ sender: UIButton) {
+        myFortuneWheelView._rotate(toNextIndex: sender.tag)
+    }
 }
 
 // MARK: - WWFortuneWheelViewDelegate
@@ -79,6 +81,7 @@ private extension ViewController {
 
             stateImages.forEach { (image, state) in
                 button.setImage(image, for: state)
+                button.backgroundColor = .black.withAlphaComponent(0.3)
             }
             
             button.setTitle(nil, for: .normal)

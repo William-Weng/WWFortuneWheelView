@@ -14,6 +14,17 @@ extension Collection {
     subscript(safe index: Index) -> Element? { return indices.contains(index) ? self[index] : nil }
 }
 
+// MARK: - Collection (class function)
+extension Collection where Self.Element: UIControl {
+        
+    /// 是否可以被按
+    /// - Parameter isUserInteractionEnabled: Bool
+    func _isUserInteractionEnabled(_ isUserInteractionEnabled: Bool) {
+        self.forEach { button in button.isUserInteractionEnabled = isUserInteractionEnabled }
+    }
+}
+
+
 // MARK: - Double (class function)
 extension Double {
     

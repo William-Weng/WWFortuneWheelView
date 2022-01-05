@@ -19,7 +19,7 @@ open class WWFortuneWheelView: UIView {
     @IBInspectable public var fontSize: CGFloat = 12.0
     @IBInspectable public var wheelImage: UIImage = UIImage()
     @IBInspectable public var isVerticalDisplay: Bool = false
-
+    
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var wheelView: UIView!
     @IBOutlet weak var backgroundImageView: UIImageView!
@@ -46,8 +46,11 @@ open class WWFortuneWheelView: UIView {
     }
     
     override public func draw(_ rect: CGRect) {
+        
         bullseyeButtonsCountSetting(with: count, buttonSize: buttonSize, buttonPoint: buttonPoint, fontSize: fontSize, wheelImage: wheelImage, isVerticalDisplay: isVerticalDisplay)
+        
         #if TARGET_INTERFACE_BUILDER
+        bullseyeButtons.forEach { $0.backgroundColor = .black.withAlphaComponent(0.3) }
         #endif
     }
     
@@ -67,6 +70,30 @@ public extension WWFortuneWheelView {
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { touchesEnded(touches, with: event) }
 }
 
+// MARK: 公開的Function
+public extension WWFortuneWheelView {
+    
+    /// 轉動至特定的Index (直接轉角度) => Button的Tag (不要去改它)
+    /// - Parameter index: Int
+    func _rotate(toNextIndex index: Int) {
+        
+        let rotateAngle = angleMaker(with: count, for: currentIndex - index)
+        
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: animationDuration, delay: .zero, options: [.curveEaseIn]) {
+            
+            self.wheelView.transform = self.wheelView.transform.rotated(by: rotateAngle._radian())
+            
+            if (self.isVerticalDisplay) {
+                self.bullseyeButtons.forEach { $0.transform = $0.transform.rotated(by: -rotateAngle._radian()) }
+            }
+            
+        } completion: { postion in
+            self.currentIndex = index
+            self.myDelegate?.didRotated(self, at: index, angle: rotateAngle)
+        }
+    }
+}
+
 // MARK: UIResponder / UITouch
 private extension WWFortuneWheelView {
     
@@ -81,10 +108,11 @@ private extension WWFortuneWheelView {
         else {
             canRotate = false; return
         }
-        
+                
+        canRotate = true
+        bullseyeButtons._isUserInteractionEnabled(false)
         initialRotationParameter = rotationParameterMaker(with: touch, rotationView: wheelView)
         bullseyeButtonTransforms = wheelButtonsStartTransformsMaker(bullseyeButtons)
-        canRotate = true
         
         let rotatingAngle = convertRotatingAngle(with: initialRotationParameter)
         myDelegate?.willRotate(self, unitAngle: unitAngleMaker(with: count), startAngle: rotatingAngle)
@@ -123,8 +151,11 @@ private extension WWFortuneWheelView {
             self.rotateWheelView(with: nextAngle._radian(), isVerticalDisplay: self.isVerticalDisplay)
             self.myDelegate?.autoRotated(self, from: self.currentIndex, to: nextIndex, duration: self.animationDuration)
         } completion: { postion in
+            
             let angle = Double(nextIndex) * self.unitAngleMaker(with: self.count)
+            
             self.currentIndex = nextIndex
+            self.bullseyeButtons._isUserInteractionEnabled(false)
             self.myDelegate?.didRotated(self, at: nextIndex, angle: angle)
         }
     }
@@ -140,8 +171,9 @@ private extension WWFortuneWheelView {
         let name = String(describing: Self.self)
         
         bundle.loadNibNamed(name, owner: self, options: nil)
-        contentView.frame = bounds
         
+        contentView.frame = bounds
+        contentView.isMultipleTouchEnabled = false
         addSubview(contentView)
     }
     
